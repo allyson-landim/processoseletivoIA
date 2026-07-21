@@ -85,28 +85,35 @@ projetos/1-classificacao-mnist/
 
 ## 📝 Relatório do Candidato
 
-👤 **Nome Completo:**
+👤 **Nome Completo:** Allyson Andre Almeida de Castro Paes Landim
 
 ### 1️⃣ Resumo da Arquitetura do Modelo
+A arquitetura da CNN foi estruturada com o objetivo de extrair características mantendo um baixo custo computacional. A rede é composta por 3 blocos convolucionais sucessivos. Cada bloco utiliza uma camada `Conv2D` (com 32 filtros no primeiro e 64 nos subsequentes, ambas com ativação ReLU), seguida de `BatchNormalization` para estabilizar os gradientes e acelerar a convergência, e `MaxPooling2D` para redução de dimensionalidade espacial. 
 
-Descreva, em palavras, a arquitetura da CNN implementada em `train_model.py` (número de blocos convolucionais, uso de batch normalization/dropout, estratégia de validação/early stopping).
+Após a extração de features, os dados são planificados (`Flatten`) e submetidos a uma camada de `Dropout` com taxa de 50% para atuar como regularização e mitigar o overfitting. A camada de saída é densa, contendo 10 neurônios (um para cada classe) com ativação Softmax.
+
+Para a validação, separamos de forma explícita 20% do conjunto de treinamento (`validation_split=0.2`). O treinamento foi gerenciado por uma estratégia de `EarlyStopping`, monitorando a perda de validação (`val_loss`) com uma paciência de 3 épocas e restaurando os melhores pesos ao final.
 
 ### 2️⃣ Bibliotecas Utilizadas
-
-Liste as principais bibliotecas utilizadas, preferencialmente com suas versões.
+*   **TensorFlow / Keras** (usado para processamento do dataset MNIST, construção, treinamento e inferência Edge com tf.lite)
+*   **NumPy** (usado para manipulações matriciais e pré-processamento de dados na inferência)
 
 ### 3️⃣ Técnica de Otimização do Modelo
-
-Explique qual técnica foi utilizada para otimizar o modelo em `optimize_model.py`.
+A técnica aplicada no `optimize_model.py` foi a **Dynamic Range Quantization** (Quantização de Faixa Dinâmica) nativa do conversor do TensorFlow Lite (`tf.lite.Optimize.DEFAULT`). Essa técnica quantiza os pesos do modelo (que originalmente são armazenados em ponto flutuante de 32 bits - `float32`) para inteiros de 8 bits (`int8`) pós-treinamento. O resultado é uma redução no tamanho do modelo em quase 4 vezes, o que é crucial para deploy em dispositivos Edge com memória restrita, sofrendo uma degradação quase nula na acurácia.
 
 ### 4️⃣ Resultados Obtidos
-
-Informe a acurácia de validação obtida e o tamanho dos arquivos `model.h5` e `model.tflite`.
+*   **Acurácia de Validação:** 98.68%
+*   **Tamanho do `model.h5`:** 733KB
+*   **Tamanho do `model.tflite`:** 68KB
 
 ### 5️⃣ Comentários Adicionais (Opcional)
-
-Dificuldades encontradas, decisões técnicas importantes, limitações do modelo, aprendizados durante o desafio.
+A maior decisão técnica do projeto consistiu no balanceamento do modelo: ele precisava ser profundo o suficiente para atingir uma precisão satisfatória (acima de 98%), mas leve o suficiente para ser considerado eficiente em um fluxo de Edge AI. A utilização de Batch Normalization eliminou a necessidade de treinamentos muito longos, permitindo que a rede convergisse rapidamente dentro das restrições de treinamento exclusivo por CPU. 
 
 ### 6️⃣ Exemplo de Inferência
+Amostra 1: predito=7 | real=7
+Amostra 2: predito=2 | real=2
+Amostra 3: predito=1 | real=1
+Amostra 4: predito=0 | real=0
+Amostra 5: predito=4 | real=4
 
-Cole a saída do terminal ao rodar `run_inference.py` (predito vs. real para as 5+ amostras), e comente brevemente se houve algum caso interessante (acerto ou erro) entre as amostras testadas.
+Todas as 5 amostras iniciais foram preditas corretamente, indicando que a quantização dos pesos de float32 para int8 não prejudicou o desempenho de inferência em casos reais.
