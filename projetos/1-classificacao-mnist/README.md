@@ -104,7 +104,7 @@ A técnica aplicada no `optimize_model.py` foi a **Dynamic Range Quantization** 
 ### 4️⃣ Resultados Obtidos
 *   **Acurácia de Validação:** 99.01%
 *   **Tamanho do `model.h5`:** 733KB
-*   **Tamanho do `model.tflite`:** 68KB
+*   **Tamanho do `model.tflite`:** 67.6KB
 
 ### 5️⃣ Comentários Adicionais (Opcional)
 A maior decisão técnica do projeto consistiu no balanceamento do modelo: ele precisava ser profundo o suficiente para atingir uma precisão satisfatória (cerca de 99%), mas leve o suficiente para ser considerado eficiente em um fluxo de Edge AI. A utilização de Batch Normalization eliminou a necessidade de treinamentos muito longos, permitindo que a rede convergisse rapidamente dentro das restrições de treinamento exclusivo por CPU. 
