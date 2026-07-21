@@ -13,6 +13,7 @@ import tensorflow as tf
 
 N_SAMPLES = 5
 
+# O código pré-existente no arquivo já contempla os requisitos requeridos. 
 
 def main():
     import os

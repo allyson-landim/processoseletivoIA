@@ -12,6 +12,8 @@ import os
 #   4. Salvar o resultado como "model.tflite"
 # ---------------------------------------------------------------------------
 
+# Versão final do código do arquivo optimize_model.py
+
 def main():
     # 1. Carrega o modelo Keras treinado anteriormente
     print("Carregando o modelo 'model.h5'...")

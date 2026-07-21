@@ -16,6 +16,8 @@ from tensorflow.keras import layers
 #   7. Salvar o modelo treinado como "model.h5"
 # ---------------------------------------------------------------------------
 
+# Versão final do código do arquivo train_model.py
+
 def create_model():
     """
     Constrói a arquitetura da Rede Neural Convolucional (CNN).
@@ -103,4 +105,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
