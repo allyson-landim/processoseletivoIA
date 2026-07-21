@@ -102,12 +102,12 @@ Para a validação, separamos de forma explícita 20% do conjunto de treinamento
 A técnica aplicada no `optimize_model.py` foi a **Dynamic Range Quantization** (Quantização de Faixa Dinâmica) nativa do conversor do TensorFlow Lite (`tf.lite.Optimize.DEFAULT`). Essa técnica quantiza os pesos do modelo (que originalmente são armazenados em ponto flutuante de 32 bits - `float32`) para inteiros de 8 bits (`int8`) pós-treinamento. O resultado é uma redução no tamanho do modelo em quase 4 vezes, o que é crucial para deploy em dispositivos Edge com memória restrita, sofrendo uma degradação quase nula na acurácia.
 
 ### 4️⃣ Resultados Obtidos
-*   **Acurácia de Validação:** 98.68%
+*   **Acurácia de Validação:** 99.01%
 *   **Tamanho do `model.h5`:** 733KB
 *   **Tamanho do `model.tflite`:** 68KB
 
 ### 5️⃣ Comentários Adicionais (Opcional)
-A maior decisão técnica do projeto consistiu no balanceamento do modelo: ele precisava ser profundo o suficiente para atingir uma precisão satisfatória (acima de 98%), mas leve o suficiente para ser considerado eficiente em um fluxo de Edge AI. A utilização de Batch Normalization eliminou a necessidade de treinamentos muito longos, permitindo que a rede convergisse rapidamente dentro das restrições de treinamento exclusivo por CPU. 
+A maior decisão técnica do projeto consistiu no balanceamento do modelo: ele precisava ser profundo o suficiente para atingir uma precisão satisfatória (cerca de 99%), mas leve o suficiente para ser considerado eficiente em um fluxo de Edge AI. A utilização de Batch Normalization eliminou a necessidade de treinamentos muito longos, permitindo que a rede convergisse rapidamente dentro das restrições de treinamento exclusivo por CPU. 
 
 ### 6️⃣ Exemplo de Inferência
 Amostra 1: predito=7 | real=7
